@@ -1,12 +1,34 @@
 <template>
   <div class="edit-view">
     <section class="widget-panel">widget</section>
-    <section class="main">main</section>
+    <section class="main">
+      <component v-for="comp in components" :key="comp.id" :is="comp.name" v-bind="comp.props" />
+    </section>
     <section class="attr-panel">attr</section>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<!-- 这里没有有setup语法，因为setup语法不方便注册动态组件 -->
+<script lang="ts">
+import { type GlobalStore } from '@/stores-vuex'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import LText from '@/regist-components/LText.vue'
+
+export default defineComponent({
+  components: {
+    LText
+  },
+  setup() {
+    const store = useStore<GlobalStore>()
+    const components = computed(() => store.state.editor.components)
+
+    return {
+      components
+    }
+  }
+})
+</script>
 
 <style lang="less" scoped>
 .edit-view {

@@ -31,37 +31,21 @@
 </template>
 
 <script setup lang="ts">
+import type { ProductInfo } from '@/stores-vuex'
 import { Edit, Delete, View } from '@element-plus/icons-vue'
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import type { PropType } from 'vue'
+
+defineProps({ list: { type: Array as PropType<ProductInfo[]> } })
 const router = useRouter()
-interface IProduct {
-  id: string
-  name: string
-}
 
-type IProductList = Array<IProduct>
-
-const list = ref<IProductList>([
-  { id: 'p-01', name: '作品一' },
-  { id: 'p-02', name: '作品二' },
-  { id: 'p-03', name: '作品三' },
-  { id: 'p-04', name: '作品四' },
-  { id: 'p-05', name: '作品五' },
-  { id: 'p-06', name: '作品六' },
-  { id: 'p-07', name: '作品七' },
-  { id: 'p-08', name: '作品八' },
-  { id: 'p-09', name: '作品九' },
-  { id: 'p-10', name: '作品十' }
-])
-
-const handleView = (e: any, product: IProduct) => {
+const handleView = (e: any, product: ProductInfo) => {
   console.info('%c 🍺 e ', 'color:#fff;background:#f5ce50', e)
   console.info('%c 🍅 product ', 'color:#fff;background:#7f2b82', product)
   router.push(`/detail/${product.id}`)
 }
 
-const handleEdit = (e: any, product: IProduct) => {
+const handleEdit = (e: any, product: ProductInfo) => {
   router.push({ name: 'product-edit', params: { id: product.id } })
 }
 </script>

@@ -1,10 +1,10 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "**/*.d.ts"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-    "types": ["element-plus/global"],
+    "moduleResolution": "node",
+    "types": ["element-plus/global.d.ts"],
     "composite": true,
     "baseUrl": ".",
     "paths": {

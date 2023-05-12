@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
+import UserProfile from './components/UserProfile.vue'
 const router = useRouter()
 
 const handleBackHome = () => {
@@ -14,6 +15,7 @@ const handleBackHome = () => {
         <el-icon style="vertical-align: middle"><ElementPlus /></el-icon>
         <span style="vertical-align: middle"> 乐高 </span>
       </div>
+      <UserProfile />
     </header>
     <div class="main">
       <section class="content">
@@ -41,6 +43,9 @@ const handleBackHome = () => {
     box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.3);
     padding: 0 20px;
     z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .logo {
       cursor: pointer;

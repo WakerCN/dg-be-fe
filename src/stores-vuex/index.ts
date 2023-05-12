@@ -1,8 +1,21 @@
 import { createStore } from 'vuex'
+import { editor, type EditorStore } from './editor'
+import { products, type ProductsStore } from './product'
+import { user, type UserInfo } from './user'
 
-const vuexStore = createStore({
-  state: {
-    count: 0
-  },
-  mutations: {}
+interface GlobalStore {
+  user: UserInfo
+  products: ProductsStore
+  editor: EditorStore
+}
+
+const vuexStore = createStore<GlobalStore>({
+  modules: {
+    user: user,
+    products: products,
+    editor: editor
+  }
 })
+
+export type { GlobalStore }
+export { vuexStore }
