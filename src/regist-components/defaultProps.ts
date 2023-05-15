@@ -1,6 +1,49 @@
 import _ from 'lodash'
 
-const commonDefaultProps = {
+interface ComponentCommonProps {
+  // action
+  actionType: string
+  url: string
+
+  // size
+  width: string
+  height: string
+  paddingLeft: string
+  paddingRight: string
+  paddingTop: string
+  paddingBottom: string
+
+  // border type
+  borderStyle: string
+  borderColor: string
+  borderWidth: string
+  borderRadius: string
+
+  // shadow and opacity
+  boxShadow: string
+  opacity: number
+
+  // position and x.y
+  position: string
+  left: string
+  top: string
+  right: string
+}
+
+interface TextComponentProps extends ComponentCommonProps {
+  text: string
+  fontSize: string
+  fontFamily: string
+  fontWeight: string
+  fontStyle: string
+  textDecoration: string
+  lineHight: string
+  textAlign: string
+  color: string
+  backgroundColor: string
+}
+
+const commonDefaultProps: ComponentCommonProps = {
   // action
   actionType: '',
   url: '',
@@ -30,7 +73,7 @@ const commonDefaultProps = {
   right: '0'
 }
 
-const textDefaultProps = {
+const textDefaultProps: TextComponentProps = {
   text: '正文内容',
   fontSize: '14px',
   fontFamily: '',
@@ -44,6 +87,7 @@ const textDefaultProps = {
   ...commonDefaultProps
 }
 
+/** 将Props转换成vue识别的Props类型 */
 const transfromToComponentProps = <T extends { [key: string]: any }>(props: T) => {
   return _.mapValues(props, (item) => ({ type: item.constructor, default: item }))
 }
@@ -51,3 +95,4 @@ const transfromToComponentProps = <T extends { [key: string]: any }>(props: T) =
 const textStylePropNames = _.without(Object.keys(textDefaultProps), 'actionType', 'url', 'text')
 
 export { commonDefaultProps, textDefaultProps, transfromToComponentProps, textStylePropNames }
+export type { ComponentCommonProps, TextComponentProps }

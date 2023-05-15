@@ -1,30 +1,67 @@
 <template>
   <div class="edit-view">
-    <section class="widget-panel">widget</section>
-    <section class="main">
-      <component v-for="comp in components" :key="comp.id" :is="comp.name" v-bind="comp.props" />
+    <section class="widget-panel">
+      <ComponentList :list="templateList" @on-item-click="addItem" />
     </section>
-    <section class="attr-panel">attr</section>
+    <section class="main">
+      <EditorWrap
+        v-for="comp in components"
+        :key="comp.id"
+        :id="comp.id"
+        @on-active="onActive(comp.id)"
+        :active="comp.id === currentElement?.id"
+      >
+        <component :is="comp.name" v-bind="comp.props" />
+      </EditorWrap>
+    </section>
+    <section class="attr-panel">
+      <div>attr</div>
+      <pre>
+        {{ currentElement?.props }}
+      </pre>
+    </section>
   </div>
 </template>
 
 <!-- 这里没有有setup语法，因为setup语法不方便注册动态组件 -->
 <script lang="ts">
+import ComponentList from '@/components/ComponentList.vue'
+import EditorWrap from '@/components/EditorWrap.vue'
+import { defaultTemplates } from '@/components/defaultTemplates'
+import LText from '@/regist-components/LText.vue'
 import { type GlobalStore } from '@/stores-vuex'
+import type { ComponentData } from '@/stores-vuex/editor'
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
-import LText from '@/regist-components/LText.vue'
 
 export default defineComponent({
   components: {
-    LText
+    LText,
+    ComponentList,
+    EditorWrap
   },
   setup() {
     const store = useStore<GlobalStore>()
     const components = computed(() => store.state.editor.components)
+    const currentElement = computed<ComponentData | null>(
+      () => store.getters.getCurrentComponentProps
+    )
+
+    const addItem = (props: any) => {
+      store.commit('addComponent', props)
+    }
+
+    /** 激活画布组件 */
+    const onActive = (id: string) => {
+      store.commit('onActiveCompoent', id)
+    }
 
     return {
-      components
+      components,
+      templateList: defaultTemplates,
+      addItem,
+      onActive,
+      currentElement
     }
   }
 })

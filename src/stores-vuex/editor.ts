@@ -7,6 +7,7 @@
 import type { Module } from 'vuex'
 import type { GlobalStore } from '.'
 import { v4 as uuid } from 'uuid'
+import type { TextComponentProps } from '@/regist-components/defaultProps'
 
 interface EditorStore {
   /** 中间编辑器渲染数组 */
@@ -25,7 +26,18 @@ interface ComponentData {
 }
 
 const testEditorData: ComponentData[] = [
-  { id: uuid(), name: 'l-text', props: { text: 'text1', fontSize: '20px', color: 'red' } },
+  {
+    id: uuid(),
+    name: 'l-text',
+    props: {
+      actionType: 'url',
+      url: 'https://www.baidu.com',
+
+      text: 'text1',
+      fontSize: '20px',
+      color: 'red'
+    }
+  },
   { id: uuid(), name: 'l-text', props: { text: 'text2', fontSize: '12px' } },
   { id: uuid(), name: 'l-text', props: { text: 'text3', fontSize: '16px', fontWeight: 'bold' } }
 ]
@@ -34,6 +46,24 @@ const editor: Module<EditorStore, GlobalStore> = {
   state: {
     components: testEditorData,
     currentElement: ''
+  },
+  mutations: {
+    addComponent(state, payload: Partial<TextComponentProps>) {
+      const newComponent: ComponentData = {
+        id: uuid(),
+        name: 'l-text',
+        props: payload
+      }
+      state.components.push(newComponent)
+    },
+    onActiveCompoent(state, id: string) {
+      state.currentElement = id
+    }
+  },
+  getters: {
+    getCurrentComponentProps: (state) => {
+      return state.components.find((c) => c.id === state.currentElement)
+    }
   }
 }
 

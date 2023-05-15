@@ -31,17 +31,15 @@
 </template>
 
 <script setup lang="ts">
-import type { ProductInfo } from '@/stores-vuex'
-import { Edit, Delete, View } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import type { ProductInfo } from '@/stores-vuex/product'
+import { Delete, Edit, View } from '@element-plus/icons-vue'
 import type { PropType } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineProps({ list: { type: Array as PropType<ProductInfo[]> } })
 const router = useRouter()
 
 const handleView = (e: any, product: ProductInfo) => {
-  console.info('%c 🍺 e ', 'color:#fff;background:#f5ce50', e)
-  console.info('%c 🍅 product ', 'color:#fff;background:#7f2b82', product)
   router.push(`/detail/${product.id}`)
 }
 
