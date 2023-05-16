@@ -16,6 +16,7 @@
     </section>
     <section class="attr-panel">
       <div>attr</div>
+      <PropsTable v-if="currentElement && currentElement.props" :props="currentElement.props" />
       <pre>
         {{ currentElement?.props }}
       </pre>
@@ -27,6 +28,7 @@
 <script lang="ts">
 import ComponentList from '@/components/ComponentList.vue'
 import EditorWrap from '@/components/EditorWrap.vue'
+import PropsTable from '@/components/PropsTable.vue'
 import { defaultTemplates } from '@/components/defaultTemplates'
 import LText from '@/regist-components/LText.vue'
 import { type GlobalStore } from '@/stores-vuex'
@@ -38,7 +40,8 @@ export default defineComponent({
   components: {
     LText,
     ComponentList,
-    EditorWrap
+    EditorWrap,
+    PropsTable
   },
   setup() {
     const store = useStore<GlobalStore>()

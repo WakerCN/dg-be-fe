@@ -22,7 +22,7 @@ interface ComponentData {
   /** 业务组件名 l-text、l-image 等等 */
   name: string
   /** 元素属性 */
-  props: { [key: string]: any }
+  props: Partial<TextComponentProps>
 }
 
 const testEditorData: ComponentData[] = [
