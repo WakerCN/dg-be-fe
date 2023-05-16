@@ -1,7 +1,15 @@
 <template>
   <div class="props-table">
     <div class="prop-item" v-for="(value, key) in finalProps" :key="key">
-      <component v-if="value" :is="value?.component" :value="value.value" />
+      <div class="label">{{ value?.label }}</div>
+      <div class="input">
+        <component
+          v-if="value"
+          :is="value?.component"
+          :value="value.value"
+          v-bind="value.extraProps"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -33,4 +41,20 @@ const finalProps = computed(() => {
 })
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.props-table {
+  padding: 10px;
+  .prop-item {
+    display: flex;
+    margin-bottom: 10px;
+
+    .label {
+      width: 120px;
+    }
+
+    .input {
+      width: calc(100% - 120px);
+    }
+  }
+}
+</style>

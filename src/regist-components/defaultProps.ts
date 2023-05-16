@@ -37,7 +37,7 @@ interface TextComponentProps extends ComponentCommonProps {
   fontWeight: string
   fontStyle: string
   textDecoration: string
-  lineHight: string
+  lineHight: number
   textAlign: string
   color: string
   backgroundColor: string
@@ -80,7 +80,7 @@ const textDefaultProps: TextComponentProps = {
   fontWeight: 'normal',
   fontStyle: 'normal',
   textDecoration: 'none',
-  lineHight: '1',
+  lineHight: 1,
   textAlign: 'left',
   color: '#000000',
   backgroundColor: '',

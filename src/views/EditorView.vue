@@ -15,7 +15,6 @@
       </EditorWrap>
     </section>
     <section class="attr-panel">
-      <div>attr</div>
       <PropsTable v-if="currentElement && currentElement.props" :props="currentElement.props" />
       <pre>
         {{ currentElement?.props }}

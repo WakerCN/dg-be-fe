@@ -38,7 +38,7 @@ const testEditorData: ComponentData[] = [
       color: 'red'
     }
   },
-  { id: uuid(), name: 'l-text', props: { text: 'text2', fontSize: '12px' } },
+  { id: uuid(), name: 'l-text', props: { text: 'text2', fontSize: '12px', lineHight: 1 } },
   { id: uuid(), name: 'l-text', props: { text: 'text3', fontSize: '16px', fontWeight: 'bold' } }
 ]
 
