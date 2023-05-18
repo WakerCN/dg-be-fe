@@ -30,16 +30,40 @@ const testEditorData: ComponentData[] = [
     id: uuid(),
     name: 'l-text',
     props: {
-      actionType: 'url',
-      url: 'https://www.baidu.com',
+      // actionType: 'url',
+      // url: 'https://www.baidu.com',
 
       text: 'text1',
       fontSize: '20px',
-      color: 'red'
+      lineHeight: 1.6,
+      color: 'red',
+      textAlign: 'left',
+      fontFamily: ''
     }
   },
-  { id: uuid(), name: 'l-text', props: { text: 'text2', fontSize: '12px', lineHight: 1 } },
-  { id: uuid(), name: 'l-text', props: { text: 'text3', fontSize: '16px', fontWeight: 'bold' } }
+  {
+    id: uuid(),
+    name: 'l-text',
+    props: {
+      text: 'text2',
+      fontSize: '12px',
+      lineHeight: 1,
+      textAlign: 'right',
+      fontFamily: ''
+    }
+  },
+  {
+    id: uuid(),
+    name: 'l-text',
+    props: {
+      text: 'text3',
+      fontSize: '16px',
+      lineHeight: 1.2,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontFamily: ''
+    }
+  }
 ]
 
 const editor: Module<EditorStore, GlobalStore> = {
@@ -58,6 +82,12 @@ const editor: Module<EditorStore, GlobalStore> = {
     },
     onActiveCompoent(state, id: string) {
       state.currentElement = id
+    },
+    updateComponent(state, { key, value }) {
+      const updateComponent = state.components.find((c) => c.id === state.currentElement)
+      if (updateComponent) {
+        updateComponent.props[key as keyof TextComponentProps] = value
+      }
     }
   },
   getters: {

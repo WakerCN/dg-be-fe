@@ -6,9 +6,21 @@
         <component
           v-if="value"
           :is="value?.component"
-          :value="value.value"
+          :[value.valueProps]="value.value"
           v-bind="value.extraProps"
-        />
+          v-on="value.events"
+        >
+          <template v-if="value.subComponent && value.options">
+            <component
+              :is="value.subComponent"
+              v-for="(option, key) in value.options"
+              :key="key"
+              :value="option.value"
+              :label="option.label"
+            >
+            </component>
+          </template>
+        </component>
       </div>
     </div>
   </div>
@@ -16,13 +28,34 @@
 
 <script lang="ts" setup>
 import type { TextComponentProps } from '@/regist-components/defaultProps'
-import { mapPropsToForms, type PropToForms } from '@/regist-components/propsMap'
+import { mapPropsToForms } from '@/regist-components/propsMap'
 import _ from 'lodash'
 import { computed, defineProps, type PropType } from 'vue'
+
+interface FormProps {
+  /** 属性对应的表单组件 */
+  component: string
+  /** 表单对应的标签 */
+  label?: string
+  /** 组件的额外属性 */
+  extraProps?: { [key: string]: any }
+  /** 子组件 */
+  subComponent?: string
+  /** 子组件选项 */
+  options?: { label: string; value: any }[]
+  /** 事件名称 */
+  eventName: string
+  events: { [key: string]: (e: any) => void }
+  /** 值属性名称 */
+  valueProps: string
+  value: string
+}
 
 const props = defineProps({
   props: { type: Object as PropType<Partial<TextComponentProps>>, required: true }
 })
+
+const emits = defineEmits(['change'])
 
 const finalProps = computed(() => {
   return _.reduce(
@@ -31,12 +64,28 @@ const finalProps = computed(() => {
       const newKey = key as keyof TextComponentProps
       const item = mapPropsToForms[newKey]
       if (item) {
-        item.value = value
-        result[newKey] = item
+        const {
+          valueProps = 'modelValue',
+          eventName = 'change',
+          initalTransform,
+          afterTransform
+        } = item
+        const newItem: FormProps = {
+          ...item,
+          value: initalTransform ? initalTransform(value) : value,
+          valueProps,
+          eventName,
+          events: {
+            [eventName]: (e: any) => {
+              emits('change', { key, value: afterTransform ? afterTransform(e) : e })
+            }
+          }
+        }
+        result[newKey] = newItem
       }
       return result
     },
-    {} as PropToForms
+    {} as { [key: string]: FormProps }
   )
 })
 </script>

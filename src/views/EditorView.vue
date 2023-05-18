@@ -15,7 +15,11 @@
       </EditorWrap>
     </section>
     <section class="attr-panel">
-      <PropsTable v-if="currentElement && currentElement.props" :props="currentElement.props" />
+      <PropsTable
+        v-if="currentElement && currentElement.props"
+        :props="currentElement.props"
+        @change="handleChange"
+      />
       <pre>
         {{ currentElement?.props }}
       </pre>
@@ -42,6 +46,7 @@ export default defineComponent({
     EditorWrap,
     PropsTable
   },
+
   setup() {
     const store = useStore<GlobalStore>()
     const components = computed(() => store.state.editor.components)
@@ -58,12 +63,18 @@ export default defineComponent({
       store.commit('onActiveCompoent', id)
     }
 
+    const handleChange = (e: any) => {
+      console.log('%c 🍎 event ', 'font-size:16px;color:#ffffff;background:#f6e58d', e)
+      store.commit('updateComponent', e)
+    }
+
     return {
       components,
       templateList: defaultTemplates,
       addItem,
       onActive,
-      currentElement
+      currentElement,
+      handleChange
     }
   }
 })
