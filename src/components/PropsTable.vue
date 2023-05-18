@@ -15,9 +15,10 @@
               :is="value.subComponent"
               v-for="(option, key) in value.options"
               :key="key"
+              :label="typeof option.label === 'string' ? option.label : option.value"
               :value="option.value"
-              :label="option.label"
             >
+              <RenderVNode :vNode="option.label" />
             </component>
           </template>
         </component>
@@ -30,7 +31,8 @@
 import type { TextComponentProps } from '@/regist-components/defaultProps'
 import { mapPropsToForms } from '@/regist-components/propsMap'
 import _ from 'lodash'
-import { computed, defineProps, type PropType } from 'vue'
+import { computed, defineProps, type PropType, type VNode } from 'vue'
+import RenderVNode from '@/components/RenderVNode'
 
 interface FormProps {
   /** 属性对应的表单组件 */
@@ -41,8 +43,10 @@ interface FormProps {
   extraProps?: { [key: string]: any }
   /** 子组件 */
   subComponent?: string
+  /** 子组件自定义属性 */
+  subComponentProps?: { [key: string]: any }
   /** 子组件选项 */
-  options?: { label: string; value: any }[]
+  options?: { label: string | VNode; value: any }[]
   /** 事件名称 */
   eventName: string
   events: { [key: string]: (e: any) => void }

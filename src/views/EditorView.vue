@@ -32,6 +32,7 @@
 import ComponentList from '@/components/ComponentList.vue'
 import EditorWrap from '@/components/EditorWrap.vue'
 import PropsTable from '@/components/PropsTable.vue'
+// import PropsTable from '@/components/PropsTable.tsx'
 import { defaultTemplates } from '@/components/defaultTemplates'
 import LText from '@/regist-components/LText.vue'
 import { type GlobalStore } from '@/stores-vuex'

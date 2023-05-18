@@ -1,3 +1,4 @@
+import { type VNode } from 'vue'
 import type { TextComponentProps } from './defaultProps'
 
 export interface PropToForm {
@@ -12,8 +13,10 @@ export interface PropToForm {
   extraProps?: { [key: string]: any }
   /** 子组件 */
   subComponent?: string
+  /** 子组件自定义属性 */
+  subComponentProps?: { [key: string]: any }
   /** 子组件选项 */
-  options?: { label: string; value: any }[]
+  options?: { label: string | VNode; value: any }[]
   /** 事件名称 */
   eventName?: string
   /** 值属性名称 */
@@ -23,6 +26,20 @@ export interface PropToForm {
 export type PropToForms = {
   [P in keyof TextComponentProps]?: PropToForm
 }
+
+const fontFamilyArr = [
+  { label: '宋体', value: '"SimSun", "STSong"' },
+  { label: '黑体', value: '"SimHei", "STHeiti"' },
+  { label: '楷体', value: '"KaiTi", "STKaiti"' },
+  { label: '仿宋', value: '"FangSong", "STFangsong"' }
+]
+
+const fontFamilyOptions = fontFamilyArr.map((font) => {
+  return {
+    value: font.value,
+    label: <span style={{ fontFamily: font.value }}>{font.label}</span>
+  }
+})
 
 export const mapPropsToForms: PropToForms = {
   text: {
@@ -63,13 +80,7 @@ export const mapPropsToForms: PropToForms = {
     label: '字体',
     component: 'el-select',
     subComponent: 'el-option',
-    options: [
-      { label: '无', value: '' },
-      { label: '宋体', value: '"SimSun", "STSong"' },
-      { label: '黑体', value: '"SimHei", "STHeiti"' },
-      { label: '楷体', value: '"KaiTi", "STKaiti"' },
-      { label: '仿宋', value: '"FangSong", "STFangsong"' }
-    ],
+    options: [{ label: '无', value: '' }, ...fontFamilyOptions],
     extraProps: {}
   }
 }
