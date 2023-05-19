@@ -15,7 +15,11 @@
               :is="value.subComponent"
               v-for="(option, key) in value.options"
               :key="key"
-              :label="typeof option.label === 'string' ? option.label : option.value"
+              :label="
+                value.subComponentProps?.labelTransform
+                  ? value.subComponentProps.labelTransform(option.value)
+                  : option.label
+              "
               :value="option.value"
             >
               <RenderVNode :vNode="option.label" />

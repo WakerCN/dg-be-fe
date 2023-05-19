@@ -28,6 +28,7 @@ export type PropToForms = {
 }
 
 const fontFamilyArr = [
+  { label: '无', value: '' },
   { label: '宋体', value: '"SimSun", "STSong"' },
   { label: '黑体', value: '"SimHei", "STHeiti"' },
   { label: '楷体', value: '"KaiTi", "STKaiti"' },
@@ -80,7 +81,10 @@ export const mapPropsToForms: PropToForms = {
     label: '字体',
     component: 'el-select',
     subComponent: 'el-option',
-    options: [{ label: '无', value: '' }, ...fontFamilyOptions],
+    options: [...fontFamilyOptions],
+    subComponentProps: {
+      labelTransform: (v: string) => fontFamilyArr.find((font) => font.value === v)?.label
+    },
     extraProps: {}
   }
 }
