@@ -49,7 +49,7 @@ const commonDefaultProps: ComponentCommonProps = {
   url: '',
 
   // size
-  width: '320px',
+  width: '100%',
   height: '',
   paddingLeft: '0px',
   paddingRight: '0px',

@@ -4,15 +4,17 @@
       <ComponentList :list="templateList" @on-item-click="addItem" />
     </section>
     <section class="main">
-      <EditorWrap
-        v-for="comp in components"
-        :key="comp.id"
-        :id="comp.id"
-        @on-active="onActive(comp.id)"
-        :active="comp.id === currentElement?.id"
-      >
-        <component :is="comp.name" v-bind="comp.props" />
-      </EditorWrap>
+      <div class="canvas">
+        <EditorWrap
+          v-for="comp in components"
+          :key="comp.id"
+          :id="comp.id"
+          @on-active="onActive(comp.id)"
+          :active="comp.id === currentElement?.id"
+        >
+          <component :is="comp.name" v-bind="comp.props" />
+        </EditorWrap>
+      </div>
     </section>
     <section class="attr-panel">
       <PropsTable
@@ -98,6 +100,14 @@ export default defineComponent({
     flex: 1;
     width: calc(100% - 240px - 360px);
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .canvas {
+      width: 400px;
+      height: 700px;
+      background: palegoldenrod;
+    }
   }
 
   .attr-panel {
