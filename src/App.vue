@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
 import UserProfile from './components/UserProfile.vue'
+import { useStore } from 'vuex'
+
 const router = useRouter()
+const store = useStore()
 
 const handleBackHome = () => {
   router.push({ name: 'home' })
@@ -15,7 +18,7 @@ const handleBackHome = () => {
         <el-icon style="vertical-align: middle"><ElementPlus /></el-icon>
         <span style="vertical-align: middle"> 乐高 </span>
       </div>
-      <UserProfile />
+      <UserProfile :user="store.state.user" />
     </header>
     <div class="main">
       <section class="content">

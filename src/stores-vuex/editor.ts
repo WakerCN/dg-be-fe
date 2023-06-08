@@ -25,7 +25,7 @@ interface ComponentData {
   props: Partial<TextComponentProps>
 }
 
-const testEditorData: ComponentData[] = [
+export const testEditorData: ComponentData[] = [
   {
     id: uuid(),
     name: 'l-text',
@@ -80,7 +80,7 @@ const editor: Module<EditorStore, GlobalStore> = {
       }
       state.components.push(newComponent)
     },
-    onActiveCompoent(state, id: string) {
+    onActiveComponent(state, id: string) {
       state.currentElement = id
     },
     updateComponent(state, { key, value }) {

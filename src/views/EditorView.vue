@@ -63,7 +63,7 @@ export default defineComponent({
 
     /** 激活画布组件 */
     const onActive = (id: string) => {
-      store.commit('onActiveCompoent', id)
+      store.commit('onActiveComponent', id)
     }
 
     const handleChange = (e: any) => {

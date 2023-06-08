@@ -1,7 +1,9 @@
 <template>
-  <ElButton v-if="!$store.state.user.isLogin" type="primary" @click="handleLogin">登录</ElButton>
-  <ElDropdown v-else split-button type="default">
-    {{ $store.state.user.username }}
+  <ElButton v-if="!user.isLogin" class="user-profile-comp" type="primary" @click="handleLogin">
+    登录
+  </ElButton>
+  <ElDropdown v-else class="user-profile-comp" split-button type="default">
+    {{ user.username }}
     <template #dropdown>
       <ElDropdownMenu>
         <ElDropdownItem @click="handleLogout">退出</ElDropdownItem>
@@ -11,10 +13,14 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, type PropType } from 'vue'
 import type { GlobalStore } from '@/stores-vuex'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import type { UserInfo } from '@/stores-vuex/user'
+
+defineProps({ user: { type: Object as PropType<UserInfo>, required: true } })
 
 const router = useRouter()
 
@@ -30,9 +36,7 @@ const handleLogin = () => {
 const handleLogout = () => {
   store.commit('logout')
   ElMessage.success({ message: '退出成功', duration: 2000 })
-  setTimeout(() => {
-    router.push({ name: 'home' })
-  }, 2000)
+  setTimeout(() => router.push({ name: 'home' }), 2000)
 }
 </script>
 
