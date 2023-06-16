@@ -1,13 +1,13 @@
 /*
  * @Author       : 魏威 <1209562577@qq.com>
  * @Date         : 2023-05-31 17:15 周3
- * @Description  : 
+ * @Description  :
  */
 import { describe, expect, it } from 'vitest'
 import { vuexStore } from '@/stores-vuex'
 import { testEditorData } from '@/stores-vuex/editor'
 import type { TextComponentProps } from '@/regist-components/defaultProps'
-import { clone } from 'lodash'
+import { clone, last } from 'lodash'
 const cloneEditorData = clone(testEditorData)
 
 describe('test vuex store', () => {
@@ -38,6 +38,8 @@ describe('test vuex store', () => {
       }
       vuexStore.commit('addComponent', payload)
       expect(vuexStore.state.editor.components).toHaveLength(cloneEditorData.length + 1)
+      const lastItem = last(vuexStore.state.editor.components)
+      expect(lastItem?.props.text).toBe('text1')
     })
   })
 })

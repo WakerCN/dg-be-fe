@@ -32,11 +32,11 @@
 </template>
 
 <script lang="ts" setup>
+import RenderVNode from '@/components/RenderVNode'
 import type { TextComponentProps } from '@/regist-components/defaultProps'
 import { mapPropsToForms } from '@/regist-components/propsMap'
 import _ from 'lodash'
 import { computed, defineProps, type PropType, type VNode } from 'vue'
-import RenderVNode from '@/components/RenderVNode'
 
 interface FormProps {
   /** 属性对应的表单组件 */

@@ -11,6 +11,7 @@ import {
   ElSelect,
   ElOption
 } from 'element-plus'
+import ColorPicker from '@/components/input/ColorPicker.vue'
 
 const mapToComponent = {
   'el-input': ElInput,
@@ -19,7 +20,8 @@ const mapToComponent = {
   'el-radio-group': ElRadioGroup,
   'el-radio-button': ElRadioButton,
   'el-select': ElSelect,
-  'el-option': ElOption
+  'el-option': ElOption,
+  'color-picker': ColorPicker
 } as any
 
 interface FormProps {
@@ -83,6 +85,7 @@ export default defineComponent({
         {} as { [key: string]: FormProps }
       )
     })
+
     return () => (
       <div class="props-table">
         {Object.keys(finalProps.value).map((key) => {

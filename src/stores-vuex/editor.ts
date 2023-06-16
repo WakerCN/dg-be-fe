@@ -36,7 +36,7 @@ export const testEditorData: ComponentData[] = [
       text: 'text1',
       fontSize: '20px',
       lineHeight: 1.6,
-      color: 'red',
+      color: '#000000',
       textAlign: 'left',
       fontFamily: ''
     }

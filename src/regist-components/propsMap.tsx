@@ -1,3 +1,8 @@
+/*
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-15 15:53 周1
+ * @Description  : 
+ */
 import { type VNode } from 'vue'
 import type { TextComponentProps } from './defaultProps'
 
@@ -86,5 +91,9 @@ export const mapPropsToForms: PropToForms = {
       labelTransform: (v: string) => fontFamilyArr.find((font) => font.value === v)?.label
     },
     extraProps: {}
+  },
+  color: {
+    component: 'color-picker',
+    label: '颜色'
   }
 }

@@ -1,3 +1,8 @@
+<!--
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-12 15:16 周5
+ * @Description  : 
+-->
 <template>
   <component :is="tag" :style="styleProps" class="l-text-component" @click="handleClick">
     {{ text }}
