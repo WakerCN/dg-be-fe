@@ -1,3 +1,19 @@
 li {
   list-style: none;
 }
+
+// ----------------------- 颜色选择器样式 start ----------------------- //
+input[type='color'] {
+  border: none;
+  border-radius: 6px;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border-radius: 6px;
+    border: none;
+  }
+}
+// ------------------------ 颜色选择器样式 end ------------------------ //

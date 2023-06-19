@@ -32,7 +32,6 @@ export const testEditorData: ComponentData[] = [
     props: {
       // actionType: 'url',
       // url: 'https://www.baidu.com',
-
       text: 'text1',
       fontSize: '20px',
       lineHeight: 1.6,

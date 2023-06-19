@@ -18,7 +18,7 @@
         v-for="(color, index) in colors"
         :key="index"
         :class="`item-${index}`"
-        @click="onChange(color)"
+        @click.prevent="onChange(color)"
       >
         <div
           v-if="color.startsWith('#')"
@@ -35,10 +35,12 @@
 import type { PropType } from 'vue'
 import { defaultColorList } from './const'
 
-defineProps({
+const props = defineProps({
   value: { type: String },
   colors: { type: Array as PropType<string[]>, default: defaultColorList }
 })
+
+console.log('%c 🥒 props ', 'font-size:16px;color:#ffffff;background:#eb4d4b', props)
 
 const emits = defineEmits(['change'])
 
@@ -48,13 +50,16 @@ const onChange = (color: string) => {
 </script>
 
 <style lang="less" scoped>
+@import url('@/assets/base.less');
 .dg-color-picker {
   display: flex;
-  height: 50px;
+  height: 46px;
   .native-color-container {
     height: 100%;
     margin-right: 10px;
+
     > input {
+      width: 70px;
       height: 100%;
     }
   }
@@ -62,7 +67,30 @@ const onChange = (color: string) => {
   .picked-color-list {
     width: 150px;
     flex: 1;
-    background: palegoldenrod;
+    display: flex;
+    flex-wrap: wrap;
+
+    > li {
+      width: 22px;
+      height: 22px;
+      margin-right: 2px;
+      border-radius: 4px;
+      overflow: hidden;
+      .base-border();
+
+      &:nth-of-type(1),
+      &:nth-of-type(2),
+      &:nth-of-type(3),
+      &:nth-of-type(4),
+      &:nth-of-type(5) {
+        margin-bottom: 2px;
+      }
+
+      > div {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
 </style>

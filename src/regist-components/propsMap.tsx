@@ -1,7 +1,7 @@
 /*
  * @Author       : 魏威 <1209562577@qq.com>
  * @Date         : 2023-05-15 15:53 周1
- * @Description  : 
+ * @Description  :
  */
 import { type VNode } from 'vue'
 import type { TextComponentProps } from './defaultProps'
@@ -93,7 +93,8 @@ export const mapPropsToForms: PropToForms = {
     extraProps: {}
   },
   color: {
+    label: '颜色',
     component: 'color-picker',
-    label: '颜色'
+    valueProps: 'value'
   }
 }

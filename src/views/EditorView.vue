@@ -84,16 +84,20 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+@import url('@/assets/base.less');
+
 .edit-view {
   width: 100%;
   height: 100%;
-  background: paleturquoise;
   display: flex;
+  .base-border();
+  overflow: hidden;
 
   .widget-panel {
     width: 240px;
     height: 100%;
-    background: papayawhip;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
   }
 
   .main {
@@ -103,17 +107,19 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
+
     .canvas {
       width: 400px;
       height: 700px;
-      background: palegoldenrod;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     }
   }
 
   .attr-panel {
     width: 360px;
     height: 100%;
-    background: plum;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
 }
 </style>
