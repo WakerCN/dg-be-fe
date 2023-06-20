@@ -96,7 +96,6 @@ const finalProps = computed(() => {
     {} as { [key: string]: FormProps }
   )
 })
-console.log('%c 🍐 finalProps', 'font-size:16px;color:#ffffff;background:#ff7979', finalProps)
 </script>
 
 <style lang="less" scoped>

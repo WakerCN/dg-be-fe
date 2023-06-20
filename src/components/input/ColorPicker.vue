@@ -35,12 +35,10 @@
 import type { PropType } from 'vue'
 import { defaultColorList } from './const'
 
-const props = defineProps({
+defineProps({
   value: { type: String },
   colors: { type: Array as PropType<string[]>, default: defaultColorList }
 })
-
-console.log('%c 🥒 props ', 'font-size:16px;color:#ffffff;background:#eb4d4b', props)
 
 const emits = defineEmits(['change'])
 
@@ -54,6 +52,7 @@ const onChange = (color: string) => {
 .dg-color-picker {
   display: flex;
   height: 46px;
+
   .native-color-container {
     height: 100%;
     margin-right: 10px;
