@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "icon": {
+        "id": "terminal-powershell",
+        "color": "terminal.ansiBlue"
+      },
+      "problemMatcher": [
+				"$vite"
+			],
+      "label": "npm: dev",
+      "detail": "vite",
+      "isBackground": true
+    }
+  ]
+}
