@@ -6,7 +6,11 @@
 <template>
   <div class="file-upload">
     <input ref="inputRef" type="file" :style="{ display: 'none' }" @change="fileChange" />
-    <div class="upload-area" @click="triggerUpload" :disabled="uploadingFile">
+    <div
+      :class="{ 'upload-area': true, isDragOver: dragable && isDragOver }"
+      :disabled="uploadingFile"
+      v-on="events"
+    >
       <slot v-if="uploadingFile" name="loading">
         <span>正在上传</span>
       </slot>
@@ -54,11 +58,14 @@ type CheckedUpload = (file: File) => boolean | Promise<File>
 
 const props = defineProps({
   action: { type: String, required: true },
-  beforeUpload: { type: Function as PropType<CheckedUpload> }
+  beforeUpload: { type: Function as PropType<CheckedUpload> },
+  dragable: { type: Boolean, default: false }
 })
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const uploadFiles = ref<UploadFile[]>([])
+const isDragOver = ref<boolean>(false)
+
 const uploadingFile = computed(() => uploadFiles.value.some((f) => f.status === 'loading'))
 
 const lastUploadfile = computed(() => {
@@ -110,10 +117,9 @@ const postFile = (file: File) => {
     })
 }
 
-const fileChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  if (target.files) {
-    const file = target.files[0]
+const doUploadFiles = (files: FileList | null) => {
+  if (files) {
+    const file = files[0]
     if (props.beforeUpload) {
       const result = props.beforeUpload(file)
       if (result && result instanceof Promise) {
@@ -137,8 +143,38 @@ const fileChange = (e: Event) => {
   }
 }
 
+const fileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  doUploadFiles(target.files)
+}
+
 const removeFile = (file: UploadFile) => {
   uploadFiles.value = uploadFiles.value.filter((f) => f.id !== file.id)
+}
+
+const handleDrag = (e: DragEvent, over: boolean) => {
+  e.preventDefault()
+  isDragOver.value = over
+}
+
+const handleDrop = (e: DragEvent) => {
+  e.preventDefault()
+  isDragOver.value = false
+  if (e.dataTransfer) {
+    doUploadFiles(e.dataTransfer.files)
+  }
+}
+
+let events: Record<string, (e: any) => void> = {
+  'click': triggerUpload
+}
+if (props.dragable) {
+  events = {
+    ...events,
+    'dragover': (e: DragEvent) => handleDrag(e, true),
+    'dragleave': (e: DragEvent) => handleDrag(e, false),
+    'drop': handleDrop
+  }
 }
 </script>
 
