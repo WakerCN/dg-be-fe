@@ -1,3 +1,8 @@
+/*
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-09 11:04 周2
+ * @Description  : 
+ */
 import { fileURLToPath, URL } from 'node:url'
 
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -10,6 +15,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        additionalData: `@import url('@/assets/main.less');`
+      }
     }
   }
 })
