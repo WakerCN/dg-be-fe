@@ -1,7 +1,12 @@
+<!--
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-09 11:42 周2
+ * @Description  : 
+-->
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col v-for="item in list" :key="item.id" :span="6">
+      <el-col v-for="item in list" :key="item.id" :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
         <el-card class="box-card">
           <template #header>
             <div class="card-header">

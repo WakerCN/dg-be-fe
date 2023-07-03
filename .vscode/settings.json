@@ -1,3 +1,9 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  // "workbench.colorTheme": "One Dark Pro",
+  // "workbench.colorCustomizations":{
+  //   "tab.activeBackground": "#2f3e5e",
+  //   "activityBar.background": "#282c34",
+  //   "sideBar.background": "#383c44"
+  // }
 }

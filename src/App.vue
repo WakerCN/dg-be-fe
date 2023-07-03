@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
-import UserProfile from './components/UserProfile.vue'
 import { useStore } from 'vuex'
+import UserProfile from './components/UserProfile.vue'
+import FileUploader from './components/input/FileUploader.vue'
 
 const router = useRouter()
 const store = useStore()
@@ -13,6 +14,7 @@ const handleBackHome = () => {
 
 <template>
   <div class="wrap">
+    <FileUploader action="" />
     <header class="header">
       <div @click="handleBackHome" class="logo">
         <el-icon style="vertical-align: middle"><ElementPlus /></el-icon>
@@ -32,6 +34,7 @@ const handleBackHome = () => {
 <style lang="less" scoped>
 .wrap {
   width: 100%;
+  min-width: 600px;
   height: 100%;
   display: flex;
   flex-direction: column;

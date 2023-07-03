@@ -48,7 +48,6 @@ const onChange = (color: string) => {
 </script>
 
 <style lang="less" scoped>
-@import url('@/assets/base.less');
 .dg-color-picker {
   display: flex;
   height: 46px;

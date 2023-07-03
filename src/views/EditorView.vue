@@ -84,7 +84,6 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@import url('@/assets/base.less');
 
 .edit-view {
   width: 100%;
