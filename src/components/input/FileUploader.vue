@@ -59,7 +59,8 @@ type CheckedUpload = (file: File) => boolean | Promise<File>
 const props = defineProps({
   action: { type: String, required: true },
   beforeUpload: { type: Function as PropType<CheckedUpload> },
-  dragable: { type: Boolean, default: false }
+  dragable: { type: Boolean, default: false },
+  autoUpload: { type: Boolean, default: true }
 })
 
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -85,17 +86,10 @@ const triggerUpload = () => {
   }
 }
 
-const postFile = (file: File) => {
+const postFile = (readyFile: UploadFile) => {
   const formData = new FormData()
-  formData.append(file.name, file)
-  const fileObj = reactive<UploadFile>({
-    id: v4(),
-    name: file.name,
-    size: file.size,
-    status: 'loading',
-    raw: file
-  })
-  uploadFiles.value.push(fileObj)
+  formData.append(readyFile.name, readyFile.raw)
+  readyFile.status = 'loading'
   axios
     .post(props.action, formData, {
       headers: {
@@ -103,11 +97,11 @@ const postFile = (file: File) => {
       }
     })
     .then((response) => {
-      fileObj.status = 'success'
-      fileObj.resp = response.data
+      readyFile.status = 'success'
+      readyFile.resp = response.data
     })
     .catch((e) => {
-      fileObj.status = 'failed'
+      readyFile.status = 'failed'
       console.log('%c 🍣 e', 'font-size:16px;color:#ffffff;background:#ff7979', e)
     })
     .finally(() => {
@@ -117,7 +111,21 @@ const postFile = (file: File) => {
     })
 }
 
-const doUploadFiles = (files: FileList | null) => {
+const addFileToList = (uploadFile: File) => {
+  const fileObj = reactive<UploadFile>({
+    id: v4(),
+    name: uploadFile.name,
+    size: uploadFile.size,
+    status: 'idle',
+    raw: uploadFile
+  })
+  uploadFiles.value.push(fileObj)
+  if (props.autoUpload) {
+    postFile(fileObj)
+  }
+}
+
+const beforeUploadCheck = (files: FileList | null) => {
   if (files) {
     const file = files[0]
     if (props.beforeUpload) {
@@ -126,7 +134,7 @@ const doUploadFiles = (files: FileList | null) => {
         result
           .then((processedFile) => {
             if (processedFile instanceof File) {
-              postFile(processedFile)
+              addFileToList(processedFile)
             } else {
               throw new Error('beforeUpload() Promise should return File Object')
             }
@@ -135,17 +143,17 @@ const doUploadFiles = (files: FileList | null) => {
             console.log('%c 🍫 e ', 'font-size:16px;color:#ffffff;background:#6ab04c', e)
           })
       } else if (result === true) {
-        postFile(file)
+        addFileToList(file)
       }
     } else {
-      postFile(file)
+      addFileToList(file)
     }
   }
 }
 
 const fileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
-  doUploadFiles(target.files)
+  beforeUploadCheck(target.files)
 }
 
 const removeFile = (file: UploadFile) => {
@@ -161,13 +169,14 @@ const handleDrop = (e: DragEvent) => {
   e.preventDefault()
   isDragOver.value = false
   if (e.dataTransfer) {
-    doUploadFiles(e.dataTransfer.files)
+    beforeUploadCheck(e.dataTransfer.files)
   }
 }
 
 let events: Record<string, (e: any) => void> = {
   'click': triggerUpload
 }
+
 if (props.dragable) {
   events = {
     ...events,
@@ -176,25 +185,36 @@ if (props.dragable) {
     'drop': handleDrop
   }
 }
+
+const doUploadFile = () => {
+  uploadFiles.value.filter((f) => f.status === 'idle').forEach((f) => postFile(f))
+}
+
+defineExpose({ doUploadFile })
 </script>
 
 <style lang="less" scoped>
 .file-upload {
   margin: 0 10px;
+  width: 300px;
 
   .upload-area {
+    margin-top: 10px;
     margin-bottom: 10px;
 
+    &.isDragOver {
+      background: #ccc;
+    }
+
     .upload-btn {
+      width: 100%;
       padding: 6px;
     }
   }
 
   .list-wrap {
     max-height: 195px;
-    padding-right: 4px;
     overflow-y: auto;
-    width: 300px;
 
     .upload-item {
       padding: 6px 6px;
@@ -206,12 +226,16 @@ if (props.dragable) {
       border-radius: 6px;
       transition: all 0.3s ease;
 
-      &.upload-failed {
-        background: var(--el-color-danger-light-8);
+      &.upload-idle {
+        background: var(--el-color-info-light-8P);
       }
 
       &.upload-success {
         background: var(--el-color-success-light-8);
+      }
+
+      &.upload-failed {
+        background: var(--el-color-danger-light-8);
       }
 
       &:hover {
