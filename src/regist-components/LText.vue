@@ -26,8 +26,9 @@ const props = defineProps({
 const { styleProps, handleClick } = useComponentCommon(props, textStylePropNames)
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .l-text-component {
   position: relative !important;
+  .text-ellipsis();
 }
 </style>

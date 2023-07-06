@@ -20,6 +20,7 @@
     "pinia": "^2.0.35",
     "rgb-hex": "^4.0.1",
     "uuid": "^9.0.0",
+    "vite-plugin-vue-devtools": "^0.4.14",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuex": "^4.0.2"

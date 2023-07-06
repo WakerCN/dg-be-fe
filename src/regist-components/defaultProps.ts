@@ -7,6 +7,7 @@ interface ComponentCommonProps {
 
   // size
   width: string
+  maxWidth: string
   height: string
   paddingLeft: string
   paddingRight: string
@@ -54,6 +55,7 @@ const commonDefaultProps: ComponentCommonProps = {
 
   // size
   width: 'max-content',
+  maxWidth: '100%',
   height: '',
   paddingLeft: '10px',
   paddingRight: '10px',
