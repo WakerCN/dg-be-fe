@@ -1,8 +1,13 @@
-import type { TextComponentProps } from '@/regist-components/defaultProps'
+/*
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-12 17:46 周5
+ * @Description  :
+ */
+import type { ComponentData } from '@/stores-vuex/editor'
 import _ from 'lodash'
 import { computed } from 'vue'
 
-const useComponentCommon = (props: Readonly<Partial<TextComponentProps>>, picks: string[]) => {
+const useComponentCommon = (props: Readonly<ComponentData['props']>, picks: string[]) => {
   const styleProps = computed(() => _.pick(props, picks))
 
   const handleClick = () => {

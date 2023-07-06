@@ -43,18 +43,22 @@ interface TextComponentProps extends ComponentCommonProps {
   backgroundColor: string
 }
 
+interface ImageComponentProps extends ComponentCommonProps {
+  src: string
+}
+
 const commonDefaultProps: ComponentCommonProps = {
   // action
   actionType: '',
   url: '',
 
   // size
-  width: '100%',
+  width: 'max-content',
   height: '',
-  paddingLeft: '0px',
-  paddingRight: '0px',
-  paddingTop: '0px',
-  paddingBottom: '0px',
+  paddingLeft: '10px',
+  paddingRight: '10px',
+  paddingTop: '10px',
+  paddingBottom: '10px',
 
   // border type
   borderStyle: 'none',
@@ -87,12 +91,24 @@ const textDefaultProps: TextComponentProps = {
   ...commonDefaultProps
 }
 
+export const imageDefaultProps: ImageComponentProps = {
+  src: 'test.url',
+  ...commonDefaultProps
+}
+
 /** 将Props转换成vue识别的Props类型 */
 const transfromToComponentProps = <T extends { [key: string]: any }>(props: T) => {
   return _.mapValues(props, (item) => ({ type: item.constructor, default: item }))
 }
 
 const textStylePropNames = _.without(Object.keys(textDefaultProps), 'actionType', 'url', 'text')
+const imageStylePropNames = _.without(Object.keys(imageDefaultProps), 'actionType', 'url', 'text')
 
-export { commonDefaultProps, textDefaultProps, transfromToComponentProps, textStylePropNames }
-export type { ComponentCommonProps, TextComponentProps }
+export {
+  commonDefaultProps,
+  textDefaultProps,
+  transfromToComponentProps,
+  textStylePropNames,
+  imageStylePropNames
+}
+export type { ComponentCommonProps, TextComponentProps, ImageComponentProps }

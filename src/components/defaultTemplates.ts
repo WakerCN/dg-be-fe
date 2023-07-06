@@ -1,3 +1,8 @@
+/*
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-15 11:41 周1
+ * @Description  :
+ */
 export const defaultTemplates = [
   { text: '大标题', fontSize: '30px', fontWeight: 'bold', tag: 'h2' },
   { text: '正文', tag: 'p' },
@@ -8,10 +13,10 @@ export const defaultTemplates = [
     backgroundColor: '#1890ff',
     width: 'max-content',
     borderRadius: '8px',
-    paddingLeft:'10px',
-    paddingRight:'10px',
-    paddingTop:'4px',
-    paddingBottom:'4px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
     fontSize: '20px',
     fontWeight: 'bold',
     tag: 'p'

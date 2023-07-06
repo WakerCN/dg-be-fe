@@ -37,6 +37,7 @@ import PropsTable from '@/components/PropsTable.vue'
 // import PropsTable from '@/components/PropsTable.tsx'
 import { defaultTemplates } from '@/components/defaultTemplates'
 import LText from '@/regist-components/LText.vue'
+import LImage from '@/regist-components/LImage.vue'
 import { type GlobalStore } from '@/stores-vuex'
 import type { ComponentData } from '@/stores-vuex/editor'
 import { computed, defineComponent } from 'vue'
@@ -45,6 +46,7 @@ import { useStore } from 'vuex'
 export default defineComponent({
   components: {
     LText,
+    LImage,
     ComponentList,
     EditorWrap,
     PropsTable
@@ -73,7 +75,7 @@ export default defineComponent({
 
     return {
       components,
-      templateList: defaultTemplates,
+      templateList: defaultTemplates as any,
       addItem,
       onActive,
       currentElement,
@@ -84,7 +86,6 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-
 .edit-view {
   width: 100%;
   height: 100%;

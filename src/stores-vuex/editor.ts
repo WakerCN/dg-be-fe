@@ -7,7 +7,7 @@
 import type { Module } from 'vuex'
 import type { GlobalStore } from '.'
 import { v4 as uuid } from 'uuid'
-import type { TextComponentProps } from '@/regist-components/defaultProps'
+import type { ImageComponentProps, TextComponentProps } from '@/regist-components/defaultProps'
 
 interface EditorStore {
   /** 中间编辑器渲染数组 */
@@ -22,7 +22,7 @@ interface ComponentData {
   /** 业务组件名 l-text、l-image 等等 */
   name: string
   /** 元素属性 */
-  props: Partial<TextComponentProps>
+  props: Partial<TextComponentProps & ImageComponentProps>
 }
 
 export const testEditorData: ComponentData[] = [
@@ -71,13 +71,8 @@ const editor: Module<EditorStore, GlobalStore> = {
     currentElement: ''
   },
   mutations: {
-    addComponent(state, payload: Partial<TextComponentProps>) {
-      const newComponent: ComponentData = {
-        id: uuid(),
-        name: 'l-text',
-        props: payload
-      }
-      state.components.push(newComponent)
+    addComponent(state, payload: ComponentData) {
+      state.components.push(payload)
     },
     onActiveComponent(state, id: string) {
       state.currentElement = id
@@ -85,7 +80,7 @@ const editor: Module<EditorStore, GlobalStore> = {
     updateComponent(state, { key, value }) {
       const updateComponent = state.components.find((c) => c.id === state.currentElement)
       if (updateComponent) {
-        updateComponent.props[key as keyof TextComponentProps] = value
+        updateComponent.props[key as keyof ComponentData['props']] = value
       }
     }
   },

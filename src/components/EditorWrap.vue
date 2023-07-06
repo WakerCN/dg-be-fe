@@ -4,7 +4,8 @@
  * @Description  : 画布的包裹组件用于触发事件
 -->
 <template>
-  <div class="editor-wrap" :class="{ active }" @click="onActive(id)">
+  <div class="editor-wrap" @click="onActive(id)">
+    <div :class="{ mask: true, active }" />
     <slot></slot>
   </div>
 </template>
@@ -26,18 +27,29 @@ const onActive = (id: string) => {
 
 <style lang="less" scoped>
 .editor-wrap {
-  padding: 0;
   cursor: pointer;
   user-select: none;
-  border: 1px solid transparent;
+  position: relative;
 
-  &:hover {
-    border: 1px dashed #ccc;
+  &:hover > .mask {
+    border: 2px dashed var(--el-color-danger);
   }
-  &.active {
-    border: 1px solid #1890ff;
-    user-select: none;
-    z-index: 1500;
+
+  > .mask {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 2px solid transparent;
+    opacity: 0.7;
+
+    &.active {
+      border: 2px solid var(--el-color-primary);
+      user-select: none;
+      z-index: 2;
+    }
   }
 }
 </style>

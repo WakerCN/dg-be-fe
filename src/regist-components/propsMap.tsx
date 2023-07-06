@@ -43,7 +43,7 @@ const fontFamilyArr = [
 const fontFamilyOptions = fontFamilyArr.map((font) => {
   return {
     value: font.value,
-    label: <span style={{ fontFamily: font.value }}>{font.label}</span>
+    label: <span style={{ padding: '4px 10px', fontFamily: font.value }}>{font.label}</span>
   }
 })
 

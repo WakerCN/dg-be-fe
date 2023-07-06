@@ -25,33 +25,52 @@
       </slot>
     </div>
     <span v-if="uploadingFile" class="result"> 上传中 </span>
-    <ul class="list-wrap">
+    <ul v-if="showUploadList" class="list-wrap">
       <li v-for="file in uploadFiles" :key="file.id" :class="`upload-item upload-${file.status}`">
-        <span class="filename">{{ file.name }}</span>
-        <ElIcon>
-          <Delete class="delete-btn" @click="removeFile(file)" />
-        </ElIcon>
+        <div class="filename">
+          <ElIcon class="file-icon">
+            <Document />
+          </ElIcon>
+          <span class="file-name">
+            {{ file.name }}
+          </span>
+        </div>
+        <div class="oprate-area">
+          <ElPopover v-if="listType === 'picture'" trigger="click" :width="300">
+            <img :src="file.url" class="upload-preview-img" />
+            <template #reference>
+              <ElIcon class="view-btn">
+                <View />
+              </ElIcon>
+            </template>
+          </ElPopover>
+          <ElIcon>
+            <Delete class="delete-btn" @click="removeFile(file)" />
+          </ElIcon>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Delete } from '@element-plus/icons-vue'
+import { Delete, Document, View } from '@element-plus/icons-vue'
 import axios from 'axios'
 import _ from 'lodash'
 import { v4 } from 'uuid'
 import { computed, defineProps, reactive, ref, type PropType } from 'vue'
 /** 上传组件状态 */
 type UploadStatus = 'idle' | 'loading' | 'success' | 'failed'
+type FileListType = 'picture' | 'other'
 /** 上传文件状态 */
-interface UploadFile {
+export interface UploadFile {
   id: string
   size: number
   name: string
   status: UploadStatus
   raw: File
   resp?: any
+  url?: string
 }
 /** 检查上传 */
 type CheckedUpload = (file: File) => boolean | Promise<File>
@@ -60,8 +79,12 @@ const props = defineProps({
   action: { type: String, required: true },
   beforeUpload: { type: Function as PropType<CheckedUpload> },
   dragable: { type: Boolean, default: false },
-  autoUpload: { type: Boolean, default: true }
+  autoUpload: { type: Boolean, default: true },
+  listType: { type: String as PropType<FileListType>, default: 'other' },
+  showUploadList: { type: Boolean, default: true }
 })
+
+const emit = defineEmits(['onSuccess'])
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const uploadFiles = ref<UploadFile[]>([])
@@ -99,10 +122,17 @@ const postFile = (readyFile: UploadFile) => {
     .then((response) => {
       readyFile.status = 'success'
       readyFile.resp = response.data
+      emit('onSuccess', readyFile)
     })
     .catch((e) => {
       readyFile.status = 'failed'
-      console.log('%c 🍣 e', 'font-size:16px;color:#ffffff;background:#ff7979', e)
+      readyFile.resp = {
+        data: {
+          url: URL.createObjectURL(readyFile.raw)
+        }
+      }
+      emit('onSuccess', readyFile)
+      console.log('%c 🍣 e ', 'font-size:16px;color:#ffffff;background:#ff7979', e)
     })
     .finally(() => {
       if (inputRef.value) {
@@ -119,6 +149,18 @@ const addFileToList = (uploadFile: File) => {
     status: 'idle',
     raw: uploadFile
   })
+  if (props.listType === 'picture') {
+    try {
+      fileObj.url = URL.createObjectURL(uploadFile)
+      // const fileReader = new FileReader()
+      // fileReader.readAsDataURL(uploadFile)
+      // fileReader.addEventListener('load', () => {
+      //   fileObj.url = fileReader.result as string
+      // })
+    } catch (error) {
+      console.log('%c 🍣 error ', 'font-size:16px;color:#ffffff;background:#7ed6df', error)
+    }
+  }
   uploadFiles.value.push(fileObj)
   if (props.autoUpload) {
     postFile(fileObj)
@@ -190,17 +232,15 @@ const doUploadFile = () => {
   uploadFiles.value.filter((f) => f.status === 'idle').forEach((f) => postFile(f))
 }
 
-defineExpose({ doUploadFile })
+defineExpose({ doUploadFile, triggerUpload })
 </script>
 
 <style lang="less" scoped>
 .file-upload {
-  margin: 0 10px;
-  width: 300px;
+  width: 100%;
 
   .upload-area {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 0;
 
     &.isDragOver {
       background: #ccc;
@@ -213,6 +253,7 @@ defineExpose({ doUploadFile })
   }
 
   .list-wrap {
+    margin-top: 10px;
     max-height: 195px;
     overflow-y: auto;
 
@@ -220,6 +261,7 @@ defineExpose({ doUploadFile })
       padding: 6px 6px;
       margin-bottom: 4px;
       display: flex;
+      flex-shrink: 0;
       justify-content: space-between;
       align-items: center;
       border: 1px solid transparent;
@@ -227,7 +269,7 @@ defineExpose({ doUploadFile })
       transition: all 0.3s ease;
 
       &.upload-idle {
-        background: var(--el-color-info-light-8P);
+        background: var(--el-color-info-light-8);
       }
 
       &.upload-success {
@@ -242,21 +284,56 @@ defineExpose({ doUploadFile })
         border-color: var(--el-color-primary-light-5);
       }
 
-      .filename {
-        .text-ellipsis();
+      > .filename {
+        line-height: normal;
         padding-right: 10px;
+        .text-ellipsis();
+
+        > .file-icon {
+          margin-right: 6px;
+        }
+
+        > .file-icon,
+        > .file-name {
+          vertical-align: middle;
+        }
+
+        .name-container {
+          overflow: hidden;
+          .name {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
       }
+      .oprate-area {
+        .flex-center();
 
-      .delete-btn {
-        color: var(--el-text-color-regular);
-        cursor: pointer;
-        transition: all 0.3s ease;
+        .view-btn {
+          color: var(--el-text-color-regular);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-right: 10px;
 
-        &:hover {
-          color: var(--el-color-danger);
+          &:hover {
+            color: var(--el-color-primary);
+          }
+        }
+
+        .delete-btn {
+          color: var(--el-text-color-regular);
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            color: var(--el-color-danger);
+          }
         }
       }
     }
   }
+}
+.upload-preview-img {
+  width: 100%;
 }
 </style>
