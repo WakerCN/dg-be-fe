@@ -44,6 +44,7 @@ const onActive = (id: string) => {
     right: 0;
     border: 2px solid transparent;
     opacity: 0.7;
+    .base-transition();
 
     &.active {
       border: 2px solid var(--el-color-primary);

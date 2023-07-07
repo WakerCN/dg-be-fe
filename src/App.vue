@@ -16,7 +16,7 @@ const handleBackHome = () => {
     <header class="header">
       <div @click="handleBackHome" class="logo">
         <el-icon style="vertical-align: middle"><ElementPlus /></el-icon>
-        <span style="vertical-align: middle"> 乐高 </span>
+        <span style="vertical-align: middle"> 枓栱 </span>
       </div>
       <UserProfile :user="store.state.user" />
     </header>

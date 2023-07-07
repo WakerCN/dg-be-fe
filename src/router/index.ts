@@ -1,3 +1,8 @@
+/*
+ * @Author       : 魏威 <1209562577@qq.com>
+ * @Date         : 2023-05-09 11:04 周2
+ * @Description  :
+ */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 
@@ -18,6 +23,11 @@ const router = createRouter({
       path: '/detail/:id',
       name: 'product-detail',
       component: () => import('@/views/ProductDetail.vue')
+    },
+    {
+      path: '/snow',
+      name: 'snow',
+      component: () => import('@/views/SnowView.vue')
     }
   ]
 })

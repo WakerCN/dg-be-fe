@@ -82,6 +82,7 @@ export default defineComponent({
     padding: 10px;
     border-radius: 6px;
     cursor: pointer;
+    .base-transition();
 
     &:hover {
       background: var(--el-color-info-light-9);
